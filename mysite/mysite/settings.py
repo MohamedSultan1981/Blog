@@ -121,10 +121,13 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' 
+# if you can’t use an SMTP server, you can tell Django to write emails to the console
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #is default if not specified
 # Email server configuration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'zickler2004@gmail.com'
-EMAIL_HOST_PASSWORD = 'Meninblack@2'
+EMAIL_HOST_PASSWORD = 'ldddhrzpaplnenkh'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
