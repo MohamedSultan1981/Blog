@@ -8,10 +8,12 @@
 </p>
 {% else %}
 <h1>Share "{{ post.title }}" by e-mail</h1>
-<form method="post">
+<form method="post" 
+{% comment %} novalidate {% endcomment %}
+>
     {{ form.as_p }}
-{% csrf_token %}
-<input type="submit" value="Send e-mail">
-</form>
-{% endif %}
-{% endblock %}
+    {% csrf_token %}
+    <input type="submit" value="Send e-mail">
+    </form>
+    {% endif %}
+    {% endblock %}

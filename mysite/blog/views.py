@@ -1,10 +1,32 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 from .forms import EmailPostForm
 from django.core.mail import send_mail
 from .models import Post
+from django.views.generic import ListView
 # Create your views here.
+class PostListView(ListView):
+    """
+    Alternative post list view
+    """
+    # model = Post
+    queryset = Post.published.all() # we could have specified model = Post and Django would have built the generic Post.objects.all() QuerySet
+    context_object_name = 'posts' # The default variable is object_list if you don’t specify any context_object_name.
+    paginate_by = 3 # Django’s ListView generic view passes the page requested in a variable called page_obj
+    template_name = 'blog/post/list.html'# If you don’t set a default template, ListView will use blog/post_list.html by default.
 def post_list(request):
-    posts=Post.published.all()
+    post_list=Post.published.all()
+    paginator=Paginator(post_list, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page_number is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page_number is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+    
     return render(request,'blog/post/list.html',{'posts':posts})
 
 def post_detail(request, year,month,day,post):
@@ -26,6 +48,7 @@ def post_share(request, post_id):
         if form.is_valid():
         # Form fields passed validation
             cd = form.cleaned_data
+        # ... send email
     # ... send email
             post_url = request.build_absolute_uri(post.get_absolute_url())
       
